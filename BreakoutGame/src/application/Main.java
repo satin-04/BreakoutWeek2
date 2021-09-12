@@ -6,6 +6,8 @@ import game.engine.GameObject;
 import game.engine.TimelineGameLoop;
 import input.KeyPolling;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -37,10 +39,6 @@ public class Main extends Application {
     	gameCanvas.setStyle("border-color: RED");
     	
     	Canvas menuCanvas = new Canvas(200, 600);
-    	Button pauseButton = new Button();
-    	Button startButton = new Button();
-    	Button undoButton = new Button();
-    	Button replayButton = new Button();
     	
     	menuCanvas.setLayoutX(1100);
     	//root.getChildren().add(gameFrame); 
@@ -56,6 +54,55 @@ public class Main extends Application {
         TimelineGameLoop gameLoop = TimelineGameLoop.getInstance();
         gameLoop.setGameScene(gameScene);
         gameLoop.setGameCanvas(gameCanvas);
+        
+        //Add functionality to pause, restart, undo, replay buttons
+        //Pause calls the pause function of the timeline gameloop,
+        //and if game is paused already, unpause.
+        Button pButton = new Button();
+        pButton.setText("Pause");
+    	pButton.setOnAction(new EventHandler<ActionEvent>(){
+    		public void handle(ActionEvent e) {
+    			if(gameLoop.getTimeDelta() != 0)
+    				gameLoop.pause();
+    			else
+    				gameLoop.unpause();
+    		}
+    		
+    	});
+        GameButton pauseButton = new GameButton(pButton, 850, 150, 50, 25);
+    	
+    	//restart creates a new unique instance of gameLoop, and then reruns start
+    	Button rButton = new Button();
+    	rButton.setText("Restart");
+    	rButton.setOnAction(new EventHandler<ActionEvent>() {
+    		public void handle(ActionEvent e) {
+    			gameLoop.restart();
+    			start(primaryStage);
+    		}
+    	});
+    	GameButton restartButton = new GameButton(rButton,900, 150, 50, 25);
+    	
+    	//Restart calls the undo function of the TimeLineGameLoop which
+    	//unexecutes the latest tick, which contains the latest commands to each object.
+    	Button uButton = new Button();
+    	uButton.setText("Undo");
+    	uButton.setOnAction(new EventHandler<ActionEvent>() {
+    		public void handle(ActionEvent e) {
+    			gameLoop.undo();
+    		}
+    	});
+    	GameButton undoButton = new GameButton(uButton, 850, 300, 50, 25);
+    	
+    	
+    	//Replay calls the replay method of gameloop which executes each command one by one.
+    	Button rpButton = new Button();
+    	rpButton.setText("Replay");
+    	rpButton.setOnAction(new EventHandler<ActionEvent>() {
+    		public void handle(ActionEvent e) {
+    			gameLoop.replay();
+    		}
+    	});
+    	GameButton replayButton = new GameButton(rpButton, 900, 300, 50, 25);
         
         GameObject ball = new Ball(gameLoop, 395, 500, 10, 10, Color.BLUE);
         renderer.addDrawable(ball);
@@ -74,6 +121,10 @@ public class Main extends Application {
         DigitalTimer clock = new DigitalTimer(gameLoop, "Verdana", 14, 700, 20, Color.BLACK);
         renderer.addDrawable(clock);
         
+        renderer.addDrawable(pauseButton);
+        renderer.addDrawable(replayButton);
+        renderer.addDrawable(undoButton);
+        renderer.addDrawable(restartButton);
         gameLoop.startGameLoop();
         primaryStage.show();
     }

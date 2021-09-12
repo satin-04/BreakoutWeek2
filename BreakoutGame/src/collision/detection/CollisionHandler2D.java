@@ -57,6 +57,14 @@ public class CollisionHandler2D {
     	gameObjects.clear();
     }
     
+    public void setGameObjects(List<GameObject> objects) {
+    	this.gameObjects = objects;
+    }
+    
+    public List<GameObject> getGameObjects() {
+    	return gameObjects;
+    }
+    
     public void processCollisions() {
 		for (GameObject object1 : gameObjects) {
 			for (GameObject object2 : gameObjects) {
@@ -199,4 +207,5 @@ public class CollisionHandler2D {
 
 		object.handleScreenCollision(new Point2D(positionX, positionY));
     }
+
 }

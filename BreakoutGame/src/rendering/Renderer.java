@@ -48,6 +48,14 @@ public class Renderer {
 		}
     }
     
+    public List<DrawObject> getDrawables() {
+    	return drawables;
+    }
+    
+    public void setDrawables(List<DrawObject> drawables) {
+    	this.drawables = drawables;
+    }
+    
     public void clearDrawables() {
     	drawables.clear();
     }
