@@ -59,50 +59,63 @@ public class Main extends Application {
         //Pause calls the pause function of the timeline gameloop,
         //and if game is paused already, unpause.
         Button pButton = new Button();
+        pButton.setLayoutX(800);
+        pButton.setLayoutY(30);
         pButton.setText("Pause");
     	pButton.setOnAction(new EventHandler<ActionEvent>(){
     		public void handle(ActionEvent e) {
-    			if(gameLoop.getTimeDelta() != 0)
+    			if(!gameLoop.getPause()) {
+    				pButton.setText("Unpause");
     				gameLoop.pause();
-    			else
+    			}
+    			else {
+    				pButton.setText("Pause");
     				gameLoop.unpause();
+    			}
     		}
     		
     	});
-        GameButton pauseButton = new GameButton(pButton, 850, 150, 50, 25);
+    	root.getChildren().add(pButton);
     	
     	//restart creates a new unique instance of gameLoop, and then reruns start
     	Button rButton = new Button();
     	rButton.setText("Restart");
+    	rButton.setLayoutX(900);
+    	rButton.setLayoutY(30);
     	rButton.setOnAction(new EventHandler<ActionEvent>() {
     		public void handle(ActionEvent e) {
     			gameLoop.restart();
-    			start(primaryStage);
+    			primaryStage.close();
+    			start(new Stage());
     		}
     	});
-    	GameButton restartButton = new GameButton(rButton,900, 150, 50, 25);
+    	root.getChildren().add(rButton);
     	
     	//Restart calls the undo function of the TimeLineGameLoop which
     	//unexecutes the latest tick, which contains the latest commands to each object.
     	Button uButton = new Button();
     	uButton.setText("Undo");
+    	uButton.setLayoutX(800);
+    	uButton.setLayoutY(60);
     	uButton.setOnAction(new EventHandler<ActionEvent>() {
     		public void handle(ActionEvent e) {
     			gameLoop.undo();
     		}
     	});
-    	GameButton undoButton = new GameButton(uButton, 850, 300, 50, 25);
+    	root.getChildren().add(uButton);
     	
     	
     	//Replay calls the replay method of gameloop which executes each command one by one.
     	Button rpButton = new Button();
     	rpButton.setText("Replay");
+    	rpButton.setLayoutX(900);
+    	rpButton.setLayoutY(60);
     	rpButton.setOnAction(new EventHandler<ActionEvent>() {
     		public void handle(ActionEvent e) {
     			gameLoop.replay();
     		}
     	});
-    	GameButton replayButton = new GameButton(rpButton, 900, 300, 50, 25);
+    	root.getChildren().add(rpButton);
         
         GameObject ball = new Ball(gameLoop, 395, 500, 10, 10, Color.BLUE);
         renderer.addDrawable(ball);
@@ -121,10 +134,6 @@ public class Main extends Application {
         DigitalTimer clock = new DigitalTimer(gameLoop, "Verdana", 14, 700, 20, Color.BLACK);
         renderer.addDrawable(clock);
         
-        renderer.addDrawable(pauseButton);
-        renderer.addDrawable(replayButton);
-        renderer.addDrawable(undoButton);
-        renderer.addDrawable(restartButton);
         gameLoop.startGameLoop();
         primaryStage.show();
     }

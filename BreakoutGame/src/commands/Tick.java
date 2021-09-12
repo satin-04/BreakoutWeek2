@@ -33,8 +33,9 @@ public class Tick implements Command{
 			observer.update(timeDelta);
 		}
 		
-		renderCommand.execute(timeDelta);
+
 		collisionCommand.execute(timeDelta);
+		renderCommand.execute(timeDelta);
 	}
 
 	@Override

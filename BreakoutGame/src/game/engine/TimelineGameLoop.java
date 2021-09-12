@@ -6,6 +6,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 
+import application.Main;
 import collision.detection.CollisionHandler2D;
 import commands.Command;
 import commands.Tick;
@@ -15,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import observer.pattern.Observable;
 import observer.pattern.Observer;
@@ -32,6 +34,7 @@ public class TimelineGameLoop implements Observable {
 	private double previousTotalTime = 0;
 	private double timeDelta = 0;
     private double startNanoTime = System.currentTimeMillis();
+    private boolean paused = false;
     private final static Renderer RENDERER = Renderer.getInstance();
     private final static CollisionHandler2D COLLISION_HANDLER = CollisionHandler2D.getInstance();
     private Deque<Command> ticks;
@@ -116,24 +119,35 @@ public class TimelineGameLoop implements Observable {
 	//Handles the pause button functionality
 	public void pause() {
 		timeDelta = 0;
+		gameLoop.pause();
+		paused = true;
 	}
 	
 	//Sets timedelta running again, unpausing the game
 	public void unpause() {
-		timeDelta = previousTotalTime = totalTime;
+		paused = false;
+		previousTotalTime = totalTime;
 		totalTime = (System.currentTimeMillis() - startNanoTime) / 1000.0; 
 		timeDelta = totalTime - previousTotalTime;
+		gameLoop.play();
+	}
+	
+	public boolean getPause() {
+		return paused;
 	}
 	
 	//Undoes the latest tick
 	public void undo() {
 		Command tickToUndo = ticks.removeLast();
 		tickToUndo.unexecute();
+		
 	}
 	
-	//creates a new unique instance as part of restarting the game
 	public void restart() {
-		uniqueInstance = null;
+		timeDelta = 0;
+		observers.clear();
+		ticks.clear();
+		//uniqueInstance = null;
 	}
 	
 	//Executes each tick in the existing stack one by one.
@@ -148,7 +162,7 @@ public class TimelineGameLoop implements Observable {
 		}
 		//Executes all commands again, effectively replaying the game
 		for(Command c:replayCommands) {
-			c.execute(timeDelta);
+			//c.execute(timeDelta);
 		}
 		ticks = replayCommands;
 		

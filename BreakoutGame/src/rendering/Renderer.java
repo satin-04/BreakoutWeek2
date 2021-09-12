@@ -59,6 +59,14 @@ public class Renderer {
     public void clearDrawables() {
     	drawables.clear();
     }
+    
+    public GraphicsContext getGraphicsContext() {
+    	return this.context;
+    }
+    
+    public void setGraphicsContext(GraphicsContext g) {
+    	context = g;
+    }
 
     // Clears screen so we can draw current frame
     public void prepare() {

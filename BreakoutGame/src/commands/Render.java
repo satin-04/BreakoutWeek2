@@ -5,27 +5,28 @@ import java.util.List;
 
 import rendering.Renderer;
 import game.engine.DrawObject;
+import javafx.scene.canvas.GraphicsContext;
 
 public class Render implements Command{
 
 	Renderer RENDERER_REF;
-	List<DrawObject> currentDrawables;
+	List<DrawObject> drawablesBeforeRender;
+	GraphicsContext contextBeforeRender;
 	public Render(Renderer RENDERER_REF) {
 		this.RENDERER_REF = RENDERER_REF;
+		this.drawablesBeforeRender = RENDERER_REF.getDrawables();
+		this.contextBeforeRender = RENDERER_REF.getGraphicsContext();
 	}
 	
 	public void execute(double timeDelta) {
-		// TODO Auto-generated method stub
-		currentDrawables = RENDERER_REF.getDrawables();
 		RENDERER_REF.prepare();
 		RENDERER_REF.render();
 	}
 
 	public void unexecute() {
-		// TODO Auto-generated method stub
-		RENDERER_REF.setDrawables(currentDrawables);
+		RENDERER_REF.setDrawables(drawablesBeforeRender);
+		RENDERER_REF.setGraphicsContext(contextBeforeRender);
 		RENDERER_REF.prepare();
 		RENDERER_REF.render();
 	}
-
 }
