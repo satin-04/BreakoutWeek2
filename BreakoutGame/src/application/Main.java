@@ -25,7 +25,7 @@ public class Main extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-    	primaryStage.setTitle("P532 Homework1: Breakout");
+    	primaryStage.setTitle("P532 Assignment 2: Breakout");
         
     	Group root = new Group();
     	Scene gameScene = new Scene(root);
