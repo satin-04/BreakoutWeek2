@@ -20,13 +20,14 @@ public class PaddleMove implements Command{
 		moveDirection = srcPaddle.captureMoveDirection();
 		srcPaddle.setVelocity(srcPaddle.getMoveBehaviour().move(timeDelta, moveDirection, srcPaddle.getSpeed()));
 		srcPaddle.setNextPosition(srcPaddle.getPosition().add(srcPaddle.getVelocity()));
+		moveDirection = new Point2D(0, 0);
 	}
 	
 	@Override
 	public void reExecute() {
 		System.out.println("Executing paddleMove redo");
 		srcPaddle.setVelocity(srcPaddle.getMoveBehaviour().move(timeDelta, moveDirection, srcPaddle.getSpeed()));
-		srcPaddle.setNextPosition(srcPaddle.getPosition().add(srcPaddle.getVelocity()));
+		srcPaddle.setNextPosition(position.add(srcPaddle.getVelocity()));
 	}
 
 	@Override

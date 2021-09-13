@@ -41,12 +41,12 @@ public class Paddle extends GameObject {
 		return new Point2D(0,0);
 	}
 	
-	public MoveBehaviour getMoveBehaviour() {
-		return this.MOVE_BEHAVIOUR;
+	public static MoveBehaviour getMoveBehaviour() {
+		return MOVE_BEHAVIOUR;
 	}
 	
-	public double getSpeed() {
-		return this.speed;
+	public static double getSpeed() {
+		return speed;
 	}
 	
 	public void setVelocity(Point2D velocity) {
@@ -55,8 +55,10 @@ public class Paddle extends GameObject {
 	
 	@Override
 	public void update(Tick gameTick) {
-		PaddleMove move = new PaddleMove(this);
-		gameTick.addCommand(move);
+		if(!captureMoveDirection().equals(new Point2D(0,0)) && gameTick.getTimeDelta() != 0) {
+			PaddleMove move = new PaddleMove(this);
+			gameTick.addCommand(move);
+		}
 	}
 
 	@Override
