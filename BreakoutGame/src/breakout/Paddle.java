@@ -26,19 +26,9 @@ public class Paddle extends GameObject {
 		drawBehaviour = new DrawSquare();
 	}
 
-	public void performMove(double timeDelta) {
-		moveDirection = captureMoveDirection();
-		velocity = MOVE_BEHAVIOUR.move(timeDelta, moveDirection, speed);
-		nextPosition = position.add(velocity);
-	}
 	
-	//Overloaded method to support redo on paddle movement
-	public void performMove(Point2D moveDirection, double timeDelta) {
-		velocity = MOVE_BEHAVIOUR.move(timeDelta, moveDirection, speed);
-		nextPosition = position.add(velocity);
-	}
 	
-	private Point2D captureMoveDirection() {
+	public Point2D captureMoveDirection() {
 		if (KeyPolling.getInstance().isDown(KeyCode.D)) 
 	    {
 	    	return new Point2D(1, 0);
@@ -53,6 +43,14 @@ public class Paddle extends GameObject {
 	
 	public MoveBehaviour getMoveBehaviour() {
 		return this.MOVE_BEHAVIOUR;
+	}
+	
+	public double getSpeed() {
+		return this.speed;
+	}
+	
+	public void setVelocity(Point2D velocity) {
+		this.velocity = velocity;
 	}
 	
 	@Override

@@ -25,7 +25,7 @@ public class BrickBreak implements Command{
 	}
 	
 	@Override
-	public void execute() {
+	public void reExecute() {
 		srcBrick.setPosition(new Point2D(-2, -2));
 		srcBrick.setDimensions(-2, -2);
 		srcBrick.setColor(Color.TRANSPARENT);

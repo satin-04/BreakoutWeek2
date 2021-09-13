@@ -26,7 +26,7 @@ public class Render implements Command{
 		RENDERER_REF.render();
 	}
 	
-	public void execute() {
+	public void reExecute() {
 		RENDERER_REF.prepare();
 		RENDERER_REF.render();
 	}

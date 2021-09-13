@@ -19,7 +19,7 @@ public class CollisionCheckForTick implements Command{
 		COLLISION_HANDLER_REF.processCollisions();
 	}
 	
-	public void execute() {
+	public void reExecute() {
 		COLLISION_HANDLER_REF.processCollisions();
 	}
 

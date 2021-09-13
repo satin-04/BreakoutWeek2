@@ -191,7 +191,7 @@ public class TimelineGameLoop implements Observable {
 		        public void run() {
 		        	try {
 		           Tick redoTick = replayCommands.removeFirst();
-		            redoTick.execute();
+		            redoTick.reExecute();
 		            if(replayCommands.size() == 0) {
 				    	executorService.shutdown();
 				    }
@@ -220,7 +220,7 @@ public class TimelineGameLoop implements Observable {
 	 */
 	@Override
 	public void tick() {
-//		System.out.println("New Tick");
+		System.out.println("New Tick");
 		Tick gameTick = new Tick(observers, RENDERER, COLLISION_HANDLER);
 		ticks.addLast(gameTick);
 		gameTick.execute(timeDelta);

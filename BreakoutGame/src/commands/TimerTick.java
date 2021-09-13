@@ -25,7 +25,7 @@ public class TimerTick implements Command{
 	}
 	
 	@Override
-	public void execute() {
+	public void reExecute() {
 		sourceTimer.setFinalTime(sourceTimer.getFinalTime() + timeDelta);
 		int finalMins = (int) (sourceTimer.getFinalTime()/60);
 		int finalSecs = (int) (sourceTimer.getFinalTime()%60);

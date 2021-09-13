@@ -28,9 +28,9 @@ public class Move implements Command{
 		gameBall.setNextPosition(gameBall.getPosition().add(velocity));
 	}
 	
-
 	@Override
-	public void execute() {
+	public void reExecute() {
+		System.out.println("Executing ball redo");
 		Point2D velocity = gameBall.getVelocity();
 		MoveBehaviour behavior = gameBall.getMoveBehaviour();
 		velocity = behavior.move(timeDelta, gameBall.getMoveDirection(), gameBall.getSpeed());

@@ -15,21 +15,22 @@ public class PaddleMove implements Command{
 	}
 	@Override
 	public void execute(double timeDelta) {
-		// TODO Auto-generated method stub
 		this.timeDelta = timeDelta;
 		position = srcPaddle.getPosition();
-		srcPaddle.performMove(timeDelta);
-		moveDirection = srcPaddle.getMoveDirection();
+		moveDirection = srcPaddle.captureMoveDirection();
+		srcPaddle.setVelocity(srcPaddle.getMoveBehaviour().move(timeDelta, moveDirection, srcPaddle.getSpeed()));
+		srcPaddle.setNextPosition(srcPaddle.getPosition().add(srcPaddle.getVelocity()));
 	}
 	
 	@Override
-	public void execute() {
-		srcPaddle.performMove(moveDirection, timeDelta);
+	public void reExecute() {
+		System.out.println("Executing paddleMove redo");
+		srcPaddle.setVelocity(srcPaddle.getMoveBehaviour().move(timeDelta, moveDirection, srcPaddle.getSpeed()));
+		srcPaddle.setNextPosition(srcPaddle.getPosition().add(srcPaddle.getVelocity()));
 	}
 
 	@Override
 	public void unexecute() {
-		// TODO Auto-generated method stub
 		srcPaddle.setPosition(position);
 	}
 

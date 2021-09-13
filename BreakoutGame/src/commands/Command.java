@@ -5,5 +5,5 @@ public interface Command {
 	
 	public void unexecute();
 
-	void execute();
+	public void reExecute();
 }
