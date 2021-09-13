@@ -10,11 +10,11 @@ public class CollisionCheckForTick implements Command{
 	private List<GameObject> currentStateOfObjects;
 	public CollisionCheckForTick(CollisionHandler2D COLLISION_HANDLER_REF) {
 		this.COLLISION_HANDLER_REF = COLLISION_HANDLER_REF;
+		currentStateOfObjects = COLLISION_HANDLER_REF.getGameObjects();
 	}
 	
 	public void execute(double timeDelta) {
 		// TODO Auto-generated method stub
-		currentStateOfObjects = COLLISION_HANDLER_REF.getGameObjects();
 		COLLISION_HANDLER_REF.processCollisions();
 	}
 

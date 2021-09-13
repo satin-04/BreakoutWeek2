@@ -13,6 +13,7 @@ public class Tick implements Command{
 	ArrayList<Observer> currentObservers;
 	Renderer RENDERER_REF;
 	CollisionHandler2D COLLISION_HANDLER_REF;
+	double timeDelta;
 	
 	public Tick(ArrayList<Observer> observers, Renderer RENDERER, CollisionHandler2D COLLISION_HANDLER) {
 		currentObservers = observers; 
@@ -23,19 +24,18 @@ public class Tick implements Command{
 	
 	@Override
 	public void execute(double timeDelta) {
-		// TODO Auto-generated method stub
 		Render renderCommand = new Render(RENDERER_REF);
 		commands.add(renderCommand);
 		CollisionCheckForTick collisionCommand = new CollisionCheckForTick(COLLISION_HANDLER_REF);
 		commands.add(collisionCommand);
 		
 		for (Observer observer : currentObservers) {
-			observer.update(timeDelta);
+			observer.update(this);
 		}
 		
-
-		collisionCommand.execute(timeDelta);
-		renderCommand.execute(timeDelta);
+		for(Command c: commands) {
+			c.execute(timeDelta);
+		}
 	}
 
 	@Override
@@ -44,6 +44,14 @@ public class Tick implements Command{
 		for(Command c : commands) {
 			c.unexecute();
 		}
+	}
+	
+	public void addCommand(Command c) {
+		commands.add(c);
+	}
+	
+	public double getTimeDelta() {
+		return timeDelta;
 	}
 
 }

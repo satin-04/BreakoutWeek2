@@ -1,5 +1,7 @@
 package breakout;
 
+import commands.Move;
+import commands.Tick;
 import game.engine.GameObject;
 import game.engine.TimelineGameLoop;
 import javafx.geometry.Point2D;
@@ -29,15 +31,28 @@ public class Ball extends GameObject {
 		super(gameLoop, locationX, locationY, width, height, color);
 		drawBehaviour = new DrawSquare();
 	}
+	
+	public MoveBehaviour getMoveBehaviour() {
+		return MOVE_BEHAVIOUR;
+	}
 
 	@Override
-	public void update(double timeDelta) {
-		performMove(timeDelta);
+	public void update(Tick currentTick) {
+		Move move = new Move(this);
+		currentTick.addCommand(move);
 	}
 	
-	public void performMove(double timeDelta) {
-		velocity = MOVE_BEHAVIOUR.move(timeDelta, moveDirection, speed);
-		nextPosition = position.add(velocity);
+	
+	public Point2D getMoveDirection() {
+		return moveDirection;
+	}
+	
+	public double getSpeed() {
+		return this.speed;
+	}
+	
+	public void setVelocity(Point2D v) {
+		velocity = v;
 	}
 
 	@Override

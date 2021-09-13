@@ -66,6 +66,10 @@ public abstract class GameObject extends DrawObject implements Observer, ScreenC
         dimensions = new Point2D(width, height);
     }
     
+    public void setNextPosition(Point2D newPosition) {
+    	this.nextPosition = newPosition;
+    }
+    
     public Point2D getVelocity() {
         return velocity;
     } 

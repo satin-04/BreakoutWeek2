@@ -147,7 +147,6 @@ public class TimelineGameLoop implements Observable {
 		timeDelta = 0;
 		observers.clear();
 		ticks.clear();
-		//uniqueInstance = null;
 	}
 	
 	//Executes each tick in the existing stack one by one.

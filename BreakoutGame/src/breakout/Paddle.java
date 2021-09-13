@@ -1,5 +1,6 @@
 package breakout;
 
+import commands.Tick;
 import game.engine.GameObject;
 import input.KeyPolling;
 import javafx.geometry.Point2D;
@@ -44,8 +45,8 @@ public class Paddle extends GameObject {
 	}
 	
 	@Override
-	public void update(double timeDelta) {
-		performMove(timeDelta);
+	public void update(Tick gameTick) {
+		performMove(gameTick.getTimeDelta());
 	}
 
 	@Override

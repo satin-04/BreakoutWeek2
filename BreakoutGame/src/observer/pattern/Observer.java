@@ -1,5 +1,7 @@
 package observer.pattern;
 
+import commands.Tick;
+
 public interface Observer {
-	public void update(double timeDelta);
+	public void update(Tick currentTick);
 }

@@ -12,6 +12,7 @@ public class Render implements Command{
 	Renderer RENDERER_REF;
 	List<DrawObject> drawablesBeforeRender;
 	GraphicsContext contextBeforeRender;
+	
 	public Render(Renderer RENDERER_REF) {
 		this.RENDERER_REF = RENDERER_REF;
 		this.drawablesBeforeRender = RENDERER_REF.getDrawables();

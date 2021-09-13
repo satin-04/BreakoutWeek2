@@ -1,5 +1,6 @@
 package breakout;
 
+import commands.Tick;
 import game.engine.GameObject;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
@@ -18,7 +19,7 @@ public class Brick extends GameObject {
 	}
 	
 	@Override
-	public void update(double timeDelta) {
+	public void update(Tick gameTick) {
 		// nothing
 	}
 

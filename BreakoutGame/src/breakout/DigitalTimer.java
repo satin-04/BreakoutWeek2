@@ -1,5 +1,6 @@
 package breakout;
 
+import commands.Tick;
 import game.engine.TextObject;
 import javafx.scene.paint.Color;
 import observer.pattern.Observable;
@@ -19,11 +20,11 @@ public class DigitalTimer extends TextObject {
 	}
 
 	@Override
-	public void update(double timeDelta) {
-		finalTime += timeDelta;
+	public void update(Tick currentTick) {
+		finalTime += currentTick.getTimeDelta();
 		int finalMins = (int) (finalTime/60);
 		int finalSecs = (int) (finalTime%60);
 		
-		label = String.format("Time: %02d:%02d", (finalMins), (finalSecs));		
+		label = String.format("Time: %02d:%02d", (finalMins), (finalSecs));	
 	}	
 }
