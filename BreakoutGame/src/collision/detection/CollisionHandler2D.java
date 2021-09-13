@@ -53,7 +53,7 @@ public class CollisionHandler2D {
 		}
     }
     
-    public void clearGameObject() {
+    public void clearGameObjects() {
     	gameObjects.clear();
     }
     

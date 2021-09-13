@@ -159,16 +159,18 @@ public class TimelineGameLoop implements Observable {
 		
 	}
 	
-	public void restart() {
+	public boolean restart() {
 		if(paused) {
-			Command undoTick;
-			for(int i = ticks.size(); i>0; i--) {
-				undoTick = ticks.removeLast();
-				undoTick.unexecute();
-			}
+			observers.clear();
+			ticks.clear();
+			uniqueInstance = null;
+			RENDERER.clearDrawables();
+			COLLISION_HANDLER.clearGameObjects();
+			return true;
 		}
 		else {
 			System.out.println("Pause the game before you restart");
+			return false;
 		}
 	}
 	
@@ -183,7 +185,9 @@ public class TimelineGameLoop implements Observable {
 				undoTick.unexecute();
 				replayCommands.add(undoTick);
 			}
-			//ticks = replayCommands;
+			
+			previousTotalTime = totalTime;
+			totalTime = (System.currentTimeMillis() - startNanoTime) / 1000.0; 
 			
 			final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 		    executorService.scheduleAtFixedRate(new Runnable() {
@@ -191,16 +195,17 @@ public class TimelineGameLoop implements Observable {
 		        public void run() {
 		        	try {
 		           Tick redoTick = replayCommands.removeFirst();
-		            redoTick.reExecute();
+		           redoTick.reExecute();
 		            if(replayCommands.size() == 0) {
 				    	executorService.shutdown();
+				    	System.out.println("Finished ReExecuting commands");
 				    }
 		        	}
 		        	catch(Exception ex) {
 		        		System.out.println("Data structure empty");
 		        	}
 		        }
-		    }, 0, 50, TimeUnit.MILLISECONDS);
+		    }, 0, 25, TimeUnit.MILLISECONDS);
 		    
 	
 		}
@@ -220,7 +225,6 @@ public class TimelineGameLoop implements Observable {
 	 */
 	@Override
 	public void tick() {
-		System.out.println("New Tick");
 		Tick gameTick = new Tick(observers, RENDERER, COLLISION_HANDLER);
 		ticks.addLast(gameTick);
 		gameTick.execute(timeDelta);

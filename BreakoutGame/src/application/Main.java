@@ -84,9 +84,10 @@ public class Main extends Application {
     	rButton.setLayoutY(150);
     	rButton.setOnAction(new EventHandler<ActionEvent>() {
     		public void handle(ActionEvent e) {
-    			gameLoop.restart();
-    			//primaryStage.close();
-    			//start(new Stage());
+    			if(gameLoop.restart()) {
+    				primaryStage.close();
+    				start(new Stage());
+    			}
     		}
     	});
     	root.getChildren().add(rButton);
