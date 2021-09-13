@@ -107,7 +107,12 @@ public class Main extends Application {
     	uButton.getStyleClass().add("button");
     	uButton.setOnAction(new EventHandler<ActionEvent>() {
     		public void handle(ActionEvent e) {
-    			gameLoop.undo();
+    			if(gameLoop.getReplaying()) {
+    				System.out.println("Unable to undo while replaying, wait until replay action has finished");
+    			}
+    			else {
+    				gameLoop.undo();
+    			}
     		}
     	});
     	root.getChildren().add(uButton);
