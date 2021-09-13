@@ -65,13 +65,18 @@ public class Main extends Application {
         pButton.setText("Pause");
         pButton.setOnAction(new EventHandler<ActionEvent>(){
     		public void handle(ActionEvent e) {
-    			if(!gameLoop.getPause()) {
-    				pButton.setText("Unpause");
-    				gameLoop.pause();
+    			if(gameLoop.getReplaying()) {
+    				System.out.println("Unable to unpause during replay");
     			}
     			else {
-    				pButton.setText("Pause");
-    				gameLoop.unpause();
+	    			if(!gameLoop.getPause()) {
+	    				pButton.setText("Unpause");
+	    				gameLoop.pause();
+	    			}
+	    			else {
+	    				pButton.setText("Pause");
+	    				gameLoop.unpause();
+	    			}
     			}
     		}
     		

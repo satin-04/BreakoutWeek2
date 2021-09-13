@@ -38,6 +38,7 @@ public class TimelineGameLoop implements Observable {
 	private double timeDelta = 0;
     private double startNanoTime = System.currentTimeMillis();
     private boolean paused = false;
+    private boolean replaying = false;
     private final static Renderer RENDERER = Renderer.getInstance();
     private final static CollisionHandler2D COLLISION_HANDLER = CollisionHandler2D.getInstance();
     private Deque<Tick> ticks;
@@ -99,6 +100,10 @@ public class TimelineGameLoop implements Observable {
 	
 	public double getTimeDelta() {
 		return timeDelta;
+	}
+	
+	public boolean getReplaying() {
+		return replaying;
 	}
 	
 	@Override
@@ -177,6 +182,7 @@ public class TimelineGameLoop implements Observable {
 	//Executes each tick in the existing stack one by one.
 	public void replay() {
 		if(paused) {
+			replaying = true;
 			Tick undoTick;
 			final int numTicks = ticks.size();
 			Deque<Tick> replayCommands = new ArrayDeque<Tick>();
@@ -197,13 +203,15 @@ public class TimelineGameLoop implements Observable {
 				           ticks.add(redoTick);
 				           if(replayCommands.size() == 0) {
 						    	executorService.shutdown();
-						    	System.out.println("Finished ReExecuting commands");
+						    	System.out.println("Finished Replay");
+						    	replaying = false;
 						   }
 				        
 		        	}
 		        	catch(Exception ex) {
 		        		System.out.println("Nothing to Replay");
 		        		executorService.shutdown();
+		        		replaying = false;
 		        	}
 		        }
 		    }, 0, 25, TimeUnit.MILLISECONDS);
