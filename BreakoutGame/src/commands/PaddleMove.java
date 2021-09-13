@@ -25,7 +25,6 @@ public class PaddleMove implements Command{
 	
 	@Override
 	public void reExecute() {
-		System.out.println("Executing paddleMove redo");
 		srcPaddle.setVelocity(srcPaddle.getMoveBehaviour().move(timeDelta, moveDirection, srcPaddle.getSpeed()));
 		srcPaddle.setNextPosition(position.add(srcPaddle.getVelocity()));
 	}

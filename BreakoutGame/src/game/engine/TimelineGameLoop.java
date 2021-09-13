@@ -186,20 +186,19 @@ public class TimelineGameLoop implements Observable {
 				replayCommands.add(undoTick);
 			}
 			
-			previousTotalTime = totalTime;
-			totalTime = (System.currentTimeMillis() - startNanoTime) / 1000.0; 
-			
 			final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 		    executorService.scheduleAtFixedRate(new Runnable() {
 		        @Override
 		        public void run() {
 		        	try {
-		           Tick redoTick = replayCommands.removeFirst();
-		           redoTick.reExecute();
-		            if(replayCommands.size() == 0) {
-				    	executorService.shutdown();
-				    	System.out.println("Finished ReExecuting commands");
-				    }
+			        	if(ticks.size() == 0) {
+				           Tick redoTick = replayCommands.removeFirst();
+				           redoTick.reExecute();
+				           if(replayCommands.size() == 0) {
+						    	executorService.shutdown();
+						    	System.out.println("Finished ReExecuting commands");
+						   }
+				        }
 		        	}
 		        	catch(Exception ex) {
 		        		System.out.println("Data structure empty");
