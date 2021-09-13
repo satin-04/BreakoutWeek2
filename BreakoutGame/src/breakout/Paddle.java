@@ -55,7 +55,7 @@ public class Paddle extends GameObject {
 	
 	@Override
 	public void update(Tick gameTick) {
-		if(!captureMoveDirection().equals(new Point2D(0,0)) && gameTick.getTimeDelta() != 0) {
+		if(gameTick.getTimeDelta() != 0) {
 			PaddleMove move = new PaddleMove(this);
 			gameTick.addCommand(move);
 		}

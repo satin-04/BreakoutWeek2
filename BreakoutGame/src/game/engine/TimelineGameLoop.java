@@ -178,12 +178,13 @@ public class TimelineGameLoop implements Observable {
 	public void replay() {
 		if(paused) {
 			Tick undoTick;
+			final int numTicks = ticks.size();
 			Deque<Tick> replayCommands = new ArrayDeque<Tick>();
 			//Puts the game back to starting position by undoing all ticks
-			for(int i = ticks.size(); i>0; i--) {
+			for(int i = 0; i < numTicks; i++) {
 				undoTick = ticks.removeLast();
 				undoTick.unexecute();
-				replayCommands.add(undoTick);
+				replayCommands.addFirst(undoTick);
 			}
 			
 			final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
@@ -191,17 +192,18 @@ public class TimelineGameLoop implements Observable {
 		        @Override
 		        public void run() {
 		        	try {
-			        	if(ticks.size() == 0) {
 				           Tick redoTick = replayCommands.removeFirst();
 				           redoTick.reExecute();
+				           ticks.add(redoTick);
 				           if(replayCommands.size() == 0) {
 						    	executorService.shutdown();
 						    	System.out.println("Finished ReExecuting commands");
 						   }
-				        }
+				        
 		        	}
 		        	catch(Exception ex) {
 		        		System.out.println("Data structure empty");
+		        		executorService.shutdown();
 		        	}
 		        }
 		    }, 0, 25, TimeUnit.MILLISECONDS);

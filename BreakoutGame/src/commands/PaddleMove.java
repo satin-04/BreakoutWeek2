@@ -8,24 +8,23 @@ public class PaddleMove implements Command{
 
 	private Paddle srcPaddle;
 	private Point2D position;
-	private double timeDelta;
+	private double storedTimeDelta;
 	private Point2D moveDirection;
 	public PaddleMove(Paddle srcPaddle) {
 		this.srcPaddle = srcPaddle;
 	}
 	@Override
 	public void execute(double timeDelta) {
-		this.timeDelta = timeDelta;
+		this.storedTimeDelta = timeDelta;
 		position = srcPaddle.getPosition();
 		moveDirection = srcPaddle.captureMoveDirection();
 		srcPaddle.setVelocity(srcPaddle.getMoveBehaviour().move(timeDelta, moveDirection, srcPaddle.getSpeed()));
 		srcPaddle.setNextPosition(srcPaddle.getPosition().add(srcPaddle.getVelocity()));
-		moveDirection = new Point2D(0, 0);
 	}
 	
 	@Override
 	public void reExecute() {
-		srcPaddle.setVelocity(srcPaddle.getMoveBehaviour().move(timeDelta, moveDirection, srcPaddle.getSpeed()));
+		srcPaddle.setVelocity(srcPaddle.getMoveBehaviour().move(storedTimeDelta, moveDirection, srcPaddle.getSpeed()));
 		srcPaddle.setNextPosition(position.add(srcPaddle.getVelocity()));
 	}
 
