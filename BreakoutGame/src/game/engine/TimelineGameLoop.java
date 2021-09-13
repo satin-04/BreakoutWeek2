@@ -202,7 +202,7 @@ public class TimelineGameLoop implements Observable {
 				        
 		        	}
 		        	catch(Exception ex) {
-		        		System.out.println("Data structure empty");
+		        		System.out.println("Nothing to Replay");
 		        		executorService.shutdown();
 		        	}
 		        }

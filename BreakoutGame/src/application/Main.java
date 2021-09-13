@@ -40,7 +40,8 @@ public class Main extends Application {
     	
     	Canvas menuCanvas = new Canvas();
     	
-    	menuCanvas.setLayoutX(1000);
+    	menuCanvas.setLayoutX(900);
+    	menuCanvas.setStyle("-fx-background-color: darkgray;");
     	//root.getChildren().add(gameFrame); 
     	gameFrame.getChildren().addAll(gameCanvas, menuCanvas);
     	root.getChildren().add(gameFrame);
@@ -59,10 +60,10 @@ public class Main extends Application {
         //Pause calls the pause function of the timeline gameloop,
         //and if game is paused already, unpause.
         Button pButton = new Button();
-        pButton.setLayoutX(850);
+        pButton.setLayoutX(830);
         pButton.setLayoutY(50);
         pButton.setText("Pause");
-    	pButton.setOnAction(new EventHandler<ActionEvent>(){
+        pButton.setOnAction(new EventHandler<ActionEvent>(){
     		public void handle(ActionEvent e) {
     			if(!gameLoop.getPause()) {
     				pButton.setText("Unpause");
@@ -80,7 +81,7 @@ public class Main extends Application {
     	//restart creates a new unique instance of gameLoop, and then reruns start
     	Button rButton = new Button();
     	rButton.setText("Restart");
-    	rButton.setLayoutX(850);
+    	rButton.setLayoutX(830);
     	rButton.setLayoutY(150);
     	rButton.setOnAction(new EventHandler<ActionEvent>() {
     		public void handle(ActionEvent e) {
@@ -96,8 +97,9 @@ public class Main extends Application {
     	//unexecutes the latest tick, which contains the latest commands to each object.
     	Button uButton = new Button();
     	uButton.setText("Undo");
-    	uButton.setLayoutX(850);
+    	uButton.setLayoutX(830);
     	uButton.setLayoutY(300);
+    	uButton.getStyleClass().add("button");
     	uButton.setOnAction(new EventHandler<ActionEvent>() {
     		public void handle(ActionEvent e) {
     			gameLoop.undo();
@@ -109,7 +111,7 @@ public class Main extends Application {
     	//Replay calls the replay method of gameloop which executes each command one by one.
     	Button rpButton = new Button();
     	rpButton.setText("Replay");
-    	rpButton.setLayoutX(850);
+    	rpButton.setLayoutX(830);
     	rpButton.setLayoutY(450);
     	rpButton.setOnAction(new EventHandler<ActionEvent>() {
     		public void handle(ActionEvent e) {
