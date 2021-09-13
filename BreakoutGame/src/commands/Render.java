@@ -12,6 +12,7 @@ public class Render implements Command{
 	Renderer RENDERER_REF;
 	List<DrawObject> drawablesBeforeRender;
 	GraphicsContext contextBeforeRender;
+	private double timeDelta;
 	
 	public Render(Renderer RENDERER_REF) {
 		this.RENDERER_REF = RENDERER_REF;
@@ -20,9 +21,16 @@ public class Render implements Command{
 	}
 	
 	public void execute(double timeDelta) {
+		this.timeDelta = timeDelta;
 		RENDERER_REF.prepare();
 		RENDERER_REF.render();
 	}
+	
+	public void execute() {
+		RENDERER_REF.prepare();
+		RENDERER_REF.render();
+	}
+
 
 	public void unexecute() {
 		RENDERER_REF.setDrawables(drawablesBeforeRender);

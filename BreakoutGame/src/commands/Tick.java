@@ -24,10 +24,28 @@ public class Tick implements Command{
 	
 	@Override
 	public void execute(double timeDelta) {
-		Render renderCommand = new Render(RENDERER_REF);
-		commands.add(renderCommand);
+		this.timeDelta = timeDelta;
+
 		CollisionCheckForTick collisionCommand = new CollisionCheckForTick(COLLISION_HANDLER_REF);
 		commands.add(collisionCommand);
+		Render renderCommand = new Render(RENDERER_REF);
+		commands.add(renderCommand);
+		
+		for (Observer observer : currentObservers) {
+			observer.update(this);
+		}
+		
+		for(Command c: commands) {
+			c.execute(timeDelta);
+		}
+	}
+	
+	public void execute() {
+
+		CollisionCheckForTick collisionCommand = new CollisionCheckForTick(COLLISION_HANDLER_REF);
+		commands.add(collisionCommand);
+		Render renderCommand = new Render(RENDERER_REF);
+		commands.add(renderCommand);
 		
 		for (Observer observer : currentObservers) {
 			observer.update(this);

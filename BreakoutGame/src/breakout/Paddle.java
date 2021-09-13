@@ -1,5 +1,6 @@
 package breakout;
 
+import commands.PaddleMove;
 import commands.Tick;
 import game.engine.GameObject;
 import input.KeyPolling;
@@ -32,11 +33,11 @@ public class Paddle extends GameObject {
 	}
 	
 	private Point2D captureMoveDirection() {
-		if (KeyPolling.getInstance().isDown(KeyCode.RIGHT)) 
+		if (KeyPolling.getInstance().isDown(KeyCode.D)) 
 	    {
 	    	return new Point2D(1, 0);
 	    } 
-	    else if (KeyPolling.getInstance().isDown(KeyCode.LEFT)) 
+	    else if (KeyPolling.getInstance().isDown(KeyCode.A)) 
 	    {
 	    	return new Point2D(-1, 0);
 	    }
@@ -46,7 +47,8 @@ public class Paddle extends GameObject {
 	
 	@Override
 	public void update(Tick gameTick) {
-		performMove(gameTick.getTimeDelta());
+		PaddleMove move = new PaddleMove(this);
+		gameTick.addCommand(move);
 	}
 
 	@Override

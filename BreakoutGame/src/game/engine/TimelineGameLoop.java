@@ -5,6 +5,9 @@ import rendering.Renderer;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import application.Main;
 import collision.detection.CollisionHandler2D;
@@ -37,7 +40,7 @@ public class TimelineGameLoop implements Observable {
     private boolean paused = false;
     private final static Renderer RENDERER = Renderer.getInstance();
     private final static CollisionHandler2D COLLISION_HANDLER = CollisionHandler2D.getInstance();
-    private Deque<Command> ticks;
+    private Deque<Tick> ticks;
 
     // Singleton Pattern
     private static TimelineGameLoop uniqueInstance;
@@ -46,7 +49,7 @@ public class TimelineGameLoop implements Observable {
     
     private TimelineGameLoop() {  
 		observers = new ArrayList<Observer>();
-		ticks = new ArrayDeque<Command>();
+		ticks = new ArrayDeque<Tick>();
 		// Set up timeline as a 60 fps ticker
 		gameLoop = new Timeline();
 		gameLoop.setCycleCount(Timeline.INDEFINITE);
@@ -138,32 +141,64 @@ public class TimelineGameLoop implements Observable {
 	
 	//Undoes the latest tick
 	public void undo() {
-		Command tickToUndo = ticks.removeLast();
-		tickToUndo.unexecute();
+		if(paused) {
+			for(int i = 0; i < 30; i++) {
+				try {
+				Command tickToUndo = ticks.removeLast();
+				tickToUndo.unexecute();
+				}
+				catch(Exception ex) {
+					i = 30;
+					System.out.println("No Command to Undo");
+				}
+			}
+		}
+		else {
+			System.out.println("Pause the game before you undo");
+		}
 		
 	}
 	
 	public void restart() {
-		timeDelta = 0;
-		observers.clear();
-		ticks.clear();
+		if(paused) {
+			Command undoTick;
+			for(int i = ticks.size(); i>0; i--) {
+				undoTick = ticks.removeLast();
+				undoTick.unexecute();
+			}
+		}
+		else {
+			System.out.println("Pause the game before you restart");
+		}
 	}
 	
 	//Executes each tick in the existing stack one by one.
 	public void replay() {
-		Command undoTick;
-		Deque<Command> replayCommands = new ArrayDeque<Command>();
-		//Puts the game back to starting position by undoing all ticks
-		for(int i = ticks.size(); i>0; i--) {
-			undoTick = ticks.removeLast();
-			undoTick.unexecute();
-			replayCommands.add(undoTick);
+		if(paused) {
+			Tick undoTick;
+			Deque<Tick> replayCommands = new ArrayDeque<Tick>();
+			//Puts the game back to starting position by undoing all ticks
+			for(int i = ticks.size(); i>0; i--) {
+				undoTick = ticks.removeLast();
+				undoTick.unexecute();
+				replayCommands.add(undoTick);
+			}
+			ticks = replayCommands;
+			
+			final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+		    executorService.scheduleAtFixedRate(new Runnable() {
+		        @Override
+		        public void run() {
+		           Tick redoTick = replayCommands.removeFirst();
+		            redoTick.execute();
+		        }
+		    }, 0, 20, TimeUnit.MILLISECONDS);
+		   
+			//unpause();
 		}
-		//Executes all commands again, effectively replaying the game
-		for(Command c:replayCommands) {
-			//c.execute(timeDelta);
+		else {
+			System.out.println("Pause the game before you replay");
 		}
-		ticks = replayCommands;
 		
 	}
 

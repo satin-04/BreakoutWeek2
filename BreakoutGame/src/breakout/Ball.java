@@ -20,7 +20,7 @@ public class Ball extends GameObject {
 	private final static int ONE = 1;
 	private final static int FLIP_DIRECTION = -1;
 	//private final static int SPEED_INCREMENT = 15;
-	private double speed = 200f;
+	private double speed = -200f;
 	private Point2D moveDirection = new Point2D(1, -1);
 
 	public Ball() {
@@ -47,6 +47,9 @@ public class Ball extends GameObject {
 		return moveDirection;
 	}
 	
+	public void setMoveDirection(Point2D md) {
+		moveDirection = md;
+	}
 	public double getSpeed() {
 		return this.speed;
 	}
@@ -101,12 +104,12 @@ public class Ball extends GameObject {
 		double horizontalDirection = moveDirection.getX();
 		double verticalDirection = moveDirection.getY();
 		
-		if (position.getX() == ZERO_BOUND || position.getX() == (gameCanvas.getWidth() - dimensions.getX())) {
+		if (position.getX() <= ZERO_BOUND || position.getX() >= (gameCanvas.getWidth() - dimensions.getX())) {
 			horizontalDirection *= FLIP_DIRECTION;
 			increaseSpeed();
 		}
 		
-		if (position.getY() == ZERO_BOUND || position.getY() == (gameCanvas.getHeight() - dimensions.getY())) {
+		if (position.getY() <= ZERO_BOUND || position.getY() >= (gameCanvas.getHeight() - dimensions.getY())) {
 			verticalDirection *= FLIP_DIRECTION;
 			increaseSpeed();
 		}
