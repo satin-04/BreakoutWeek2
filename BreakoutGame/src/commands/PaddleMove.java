@@ -2,12 +2,14 @@ package commands;
 
 import breakout.Paddle;
 import javafx.geometry.Point2D;
+import movement.behaviors.MoveBehaviour;
 
 public class PaddleMove implements Command{
 
 	private Paddle srcPaddle;
 	private Point2D position;
 	private double timeDelta;
+	private Point2D moveDirection;
 	public PaddleMove(Paddle srcPaddle) {
 		this.srcPaddle = srcPaddle;
 	}
@@ -17,13 +19,12 @@ public class PaddleMove implements Command{
 		this.timeDelta = timeDelta;
 		position = srcPaddle.getPosition();
 		srcPaddle.performMove(timeDelta);
+		moveDirection = srcPaddle.getMoveDirection();
 	}
 	
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
-		position = srcPaddle.getPosition();
-		srcPaddle.performMove(timeDelta);
+		srcPaddle.performMove(moveDirection, timeDelta);
 	}
 
 	@Override

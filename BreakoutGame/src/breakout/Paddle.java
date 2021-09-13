@@ -32,6 +32,12 @@ public class Paddle extends GameObject {
 		nextPosition = position.add(velocity);
 	}
 	
+	//Overloaded method to support redo on paddle movement
+	public void performMove(Point2D moveDirection, double timeDelta) {
+		velocity = MOVE_BEHAVIOUR.move(timeDelta, moveDirection, speed);
+		nextPosition = position.add(velocity);
+	}
+	
 	private Point2D captureMoveDirection() {
 		if (KeyPolling.getInstance().isDown(KeyCode.D)) 
 	    {
@@ -43,6 +49,10 @@ public class Paddle extends GameObject {
 	    }
 		
 		return new Point2D(0,0);
+	}
+	
+	public MoveBehaviour getMoveBehaviour() {
+		return this.MOVE_BEHAVIOUR;
 	}
 	
 	@Override

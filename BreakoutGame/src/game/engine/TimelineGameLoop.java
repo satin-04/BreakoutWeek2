@@ -183,18 +183,26 @@ public class TimelineGameLoop implements Observable {
 				undoTick.unexecute();
 				replayCommands.add(undoTick);
 			}
-			ticks = replayCommands;
+			//ticks = replayCommands;
 			
 			final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 		    executorService.scheduleAtFixedRate(new Runnable() {
 		        @Override
 		        public void run() {
+		        	try {
 		           Tick redoTick = replayCommands.removeFirst();
 		            redoTick.execute();
+		            if(replayCommands.size() == 0) {
+				    	executorService.shutdown();
+				    }
+		        	}
+		        	catch(Exception ex) {
+		        		System.out.println("Data structure empty");
+		        	}
 		        }
-		    }, 0, 20, TimeUnit.MILLISECONDS);
-		   
-			//unpause();
+		    }, 0, 50, TimeUnit.MILLISECONDS);
+		    
+	
 		}
 		else {
 			System.out.println("Pause the game before you replay");

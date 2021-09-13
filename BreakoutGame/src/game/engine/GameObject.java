@@ -70,6 +70,9 @@ public abstract class GameObject extends DrawObject implements Observer, ScreenC
     	this.nextPosition = newPosition;
     }
     
+    public Point2D getMoveDirection() {
+    	return this.moveDirection;
+    }
     public Point2D getVelocity() {
         return velocity;
     } 

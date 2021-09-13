@@ -187,21 +187,21 @@ public class CollisionHandler2D {
 		
 		// Horizontal Scene Check
 		// if moving left and beyond pixel 0 - dont move
-		if (velocity.getX() < 0 && nextPosition.getX() < ZERO_BOUND) {
+		if (velocity.getX() <= 0 && nextPosition.getX() < ZERO_BOUND) {
 			positionX = ZERO_BOUND;
 		}
 		// if moving right and beyond scene width - dont move 
-		else if (velocity.getX() > 0 && (nextPosition.getX() + dimensions.getX()) >= gameCanvas.getWidth()) { 
+		else if (velocity.getX() >= 0 && (nextPosition.getX() + dimensions.getX()) >= gameCanvas.getWidth()) { 
 			positionX = gameCanvas.getWidth() - dimensions.getX();
 		} 
 		
 		// Vertical Scene Check
 		// if moving up and beyound pixel 0 - dont move
-		if (velocity.getY() < 0 && nextPosition.getY() < ZERO_BOUND) {
+		if (velocity.getY() <= 0 && nextPosition.getY() < ZERO_BOUND) {
 			positionY = ZERO_BOUND;
 		}
 		// if moving down and beyond scene height - dont move 
-		else if (velocity.getY() > 0 && (nextPosition.getY() + dimensions.getY()) >= gameCanvas.getHeight()) { 
+		else if (velocity.getY() >= 0 && (nextPosition.getY() + dimensions.getY()) >= gameCanvas.getHeight()) { 
 			positionY = gameCanvas.getHeight() - dimensions.getY();
 		} 
 
